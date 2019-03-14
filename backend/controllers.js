@@ -1,43 +1,40 @@
 const { Task } = require('./models.js');
 
-
 module.exports = {
+
   getAllTasks: (req, res) => {
-    Task.find({})
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => console.log("Error: ", err))
-
+    Task.find()
+      .then(data => console.log(data) || res.json(data))
+      .catch(err => console.log(err) || res.json(err));
   },
+
   getOneTaskById: (req, res) => {
-    Task.findById(req.params.id)
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => console.log("Error: ", err))
+    const ID = req.params.id;
+    Task.findOne({_id:ID}) 
+      .then((data) => res.json(data))
+      .catch((err) => res.json(err));
   },
+  
   createNewTask: (req, res) => {
-    Task.create(req.body)
-      .then((data) => {
-
-        res.json(data)
-      })
-      .catch((err) => console.log("Error: ", err))
+    const DATA = req.body;
+    Task.create(DATA)
+      .then(data => res.json(data))
+      .catch(err => res.json(err));
   },
+  
   updateOneTask: (req, res) => {
-    Task.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => console.log("Error: ", err))
+    const DATA = req.body;
+    const ID = req.params.id;
+    Task.findOneAndUpdate({ _id:ID}, DATA, {runValidators:true, new:true})
+      .then(data => res.json(data))
+      .catch(err => res.json(err));
   },
+  
   deleteOneTask: (req, res) => {
-    Task.findOneAndDelete({ _id: req.params.id })
-      .then((data) => {
-        res.json(data)
-      })
-      .catch((err) => console.log("Error: ", err))
+    const ID = req.params.id;
+    Task.findOneAndDelete({_id:ID})
+      .then((data) => res.json(data))
+      .catch((err) => res.json(err));
   }
 
 }

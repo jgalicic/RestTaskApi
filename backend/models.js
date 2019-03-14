@@ -1,16 +1,15 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/task_db', {useNewUrlParser:true});
 
-mongoose.connect('mongodb://localhost/task_db', { useNewUrlParser: true });
-
-var Task_schema = new mongoose.Schema({
+const TaskSchema = new mongoose.Schema({
   title: String,
   description: String,
   completed: {
     type: Boolean,
     default: false
   }
-}, { timestamps: {} })
-mongoose.model('Task_schema', Task_schema);
-var Task = mongoose.model('Task_schema')
+}, {timestamps:true});
 
-module.exports = { Task }
+const Task = mongoose.model('Task', TaskSchema);
+
+module.exports = { Task };
